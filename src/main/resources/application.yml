@@ -1,0 +1,64 @@
+server:
+  port: 8105
+spring:
+  application:
+    name: erbing-web-service
+  profiles:
+    active: feign
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+      exclude: static/**,public/**,thymeleaf/**,xlsx/**
+  mvc:
+    static-path-pattern: classpath:/resources/templates
+hystrix:
+  threadpool:
+    default:
+      maximumSize: 30
+      coreSize: 30
+  command:
+    default:
+      fallback:
+        enabled: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds:10000
+feign:
+  okhttp:
+    enabled: false
+  httpclient:
+    enabled: true
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 2000
+        loggerLevel: basic
+        readTimeout: 10000
+  compression:
+    response:
+      enabled: true
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+logging:
+  config: classpath:log4j2.xml
+#mybatis:
+#  mapper-locations: classpath:mybatis-config.xml
+#  config-location: classpath:com/erbing/member/**/*Mapper.xml
+
+eureka:
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://root:123456@localhost:8761/eureka/
+    healthcheck:
+      enabled: true
